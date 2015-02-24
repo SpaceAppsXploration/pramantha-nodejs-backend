@@ -1,0 +1,29 @@
+{
+  "name": "pramantha-nodejs-backend",
+  "version": "0.0.1",
+  "description": "Full-Stack Node.Js Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SpaceAppsXploration/pramantha-nodejs-backend.git"
+  },
+  "author": "Jacopo Scazzosi <jacoposcazzosi@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SpaceAppsXploration/pramantha-nodejs-backend/issues"
+  },
+  "homepage": "https://github.com/SpaceAppsXploration/pramantha-nodejs-backend",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "should": "^5.0.1"
+  },
+  "dependencies": {
+    "debug": "^2.1.1",
+    "express": "^4.12.0",
+    "mongodb": "^1.4.31",
+    "underscore": "^1.8.2"
+  }
+}
