@@ -1,5 +1,5 @@
 {
-  "mongoUrl": "mongodb://localhost:27017/pramantha",
+  "mongoUrl": "mongodb://localhost:27017/PMT",
   "port": 7000,
   "host": "0.0.0.0"
 }

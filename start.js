@@ -16,6 +16,8 @@ _.defaults(config, defaults);
 var app    = process.app = express();
 var server = http.createServer(app);
 
+app.set('json spaces', 2);
+
 async.series(
   [
 
@@ -31,7 +33,13 @@ async.series(
     }, 
 
     function(cbSeries) {
+      app.use(require('./middlewares/logging')());
+      return cbSeries();
+    },
+
+    function(cbSeries) {
       app.use('/helloworld', require('./routes/helloworld'));
+      app.use('/concepts',   require('./routes/concepts'));
       debug('All routes have been set-up.');
       return cbSeries();
     },
