@@ -8,11 +8,7 @@ var http     = require('http');
 var debug    = require('debug')('pramantha:start');
 var async    = require('async');
 
-var config   = require('./config/config.json');
-var defaults = require('./config/defaults.json');
-
-_.defaults(config, defaults);
-
+var config = require('./config');
 var app    = process.app = express();
 var server = http.createServer(app);
 
