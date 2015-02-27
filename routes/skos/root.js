@@ -6,10 +6,11 @@
 
 
 var Router  = require('express').Router;
-var debug   = require('debug')('pramantha:skos:root');
+var logging = require('../../logging');
 
 var router  = Router();
 var mongodb = process.app.get('mongodb');
+var logger  = logging.createLogger({name: 'skos/root', type: 'route'});
 
 router.get('/', function(req, res, next) {
   return mongodb.collection('base').findOne({"chronos:group": "STI"}, function(errFind, doc) {

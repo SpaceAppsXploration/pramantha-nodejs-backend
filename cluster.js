@@ -4,23 +4,23 @@ var path      = require('path');
 var stream    = require('stream');
 var logrotate = require('logrotate-stream');
 var fs        = require('fs');
-
-var debug     = require('debug')('pramantha:cluster');
+var logging   = require('./logging');
 var config    = require('./config');
 
 if (cluster.isMaster) {
 
   var stderr = new stream.PassThrough();
   var stdout = new stream.PassThrough();
+  var logger = logging.createLogger({name: 'cluster', stream: stdout});
 
-  if (config.log.file) {
+  if (config.logToFile) {
     var fileerr = logrotate({ file: path.join(__dirname, 'logs', 'stderr.log'), size: '100k', keep: 3 });
     var fileout = logrotate({ file: path.join(__dirname, 'logs', 'stdout.log'), size: '100k', keep: 3 });
     stderr.pipe(fileerr);
     stdout.pipe(fileout);
   }
 
-  if (config.log.console) {
+  if (config.logToConsole) {
     stderr.pipe(process.stderr);
     stdout.pipe(process.stdout);
   }
@@ -32,12 +32,12 @@ if (cluster.isMaster) {
   });
 
   cluster.on('exit', function onExit(worker) {
-    debug('worker %s (pid %s) has quit.', worker.id, worker.process.pid);
+    logger.warn('worker %s (pid %s) has quit.', worker.id, worker.process.pid);
     cluster.fork();
   });
 
   cluster.on('disconnect', function onDisconnect(worker) {
-    debug('worker %s (pid %s) has disconnected.', worker.id, worker.process.pid);
+    logger.warn('worker %s (pid %s) has disconnected.', worker.id, worker.process.pid);
     worker.process.stderr.unpipe(stderr);
     worker.process.stdout.unpipe(stdout);
   });
@@ -45,12 +45,12 @@ if (cluster.isMaster) {
   cluster.on('fork', function onFork(worker) {
     worker.process.stderr.pipe(stderr);
     worker.process.stdout.pipe(stdout);
-    debug('worker %s (pid %s) has started.', worker.id, worker.process.pid);
+    logger.info('worker %s (pid %s) has started.', worker.id, worker.process.pid);
   });
 
   var workers = config.workers || os.cpus().length;
 
-  debug('Starting %s workers.', workers);  
+  logger.info('Starting %s workers.', workers);  
 
   for (var i = 0; i < workers; i++) {
     cluster.fork();
@@ -58,7 +58,7 @@ if (cluster.isMaster) {
 
   fs.writeFile(path.join(__dirname, '.pid'), process.pid, function(errWrite) {
     if (errWrite) {
-      debug('could not write .pid file');
+      logger.error('could not write .pid file');
     }
   });
 

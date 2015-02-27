@@ -1,6 +1,5 @@
 
 var Router  = require('express').Router;
-var debug   = require('debug')('pramantha:skos');
 
 var router  = Router();
 

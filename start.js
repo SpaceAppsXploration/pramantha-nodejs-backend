@@ -5,14 +5,16 @@ var mongodb  = require('mongodb');
 var url      = require('url');
 var path     = require('path');
 var http     = require('http');
-var debug    = require('debug')('pramantha:start');
 var async    = require('async');
+var logging  = require('./logging');
 
 var config = require('./config');
 var app    = process.app = express();
 var server = http.createServer(app);
+var logger = logging.createLogger({name: 'app'});
 
 app.set('json spaces', 2);
+app.set('logger', logger);
 
 async.series(
   [
@@ -22,7 +24,7 @@ async.series(
         if (errConnect) {
           return cbSeries(errConnect);
         }
-        debug('MongoDB\'s client has been initialized.');
+        logger.trace('MongoDB\'s client has been initialized.');
         app.set('mongodb', db);
         return cbSeries();
       });
@@ -36,7 +38,7 @@ async.series(
     function(cbSeries) {
       app.use('/skos',     require('./routes/skos'));
       app.use('/concepts', require('./routes/concepts'));
-      debug('All routes have been set-up.');
+      logger.trace('All routes have been set-up.');
       return cbSeries();
     },
 
@@ -50,7 +52,7 @@ async.series(
     if (errSeries) {
       throw errSeries;
     }
-    console.log('Listening on %s:%s', config.host, config.port);
+    logger.info('Listening on %s:%s', config.host, config.port);
     return null;
   }
 

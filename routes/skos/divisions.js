@@ -1,9 +1,10 @@
 
 var Router  = require('express').Router;
-var debug   = require('debug')('pramantha:skos:divisions');
+var logging = require('../../logging');
 
 var router  = Router();
 var mongodb = process.app.get('mongodb');
+var logger  = logging.createLogger({name: 'skos/divisions', type: 'route'});
 
 
 
@@ -27,7 +28,7 @@ router.get('/:label', function(req, res, next) {
     "chronos:group": "divisions",
     "skos:prefLabel": label
   };
-  debug('Looking for subjects with skos:prefLabel %s', label);
+  logger.trace('Looking for subjects with skos:prefLabel %s', label);
   return mongodb.collection('base').findOne(query, function(errFind, doc) {
     if (errFind) {
       return next(errFind);

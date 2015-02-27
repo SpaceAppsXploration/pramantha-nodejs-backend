@@ -7,9 +7,11 @@
 
 var Router  = require('express').Router;
 var debug   = require('debug')('pramantha:skos:areas');
+var logging = require('../../logging');
 
 var router  = Router();
 var mongodb = process.app.get('mongodb');
+var logger  = logging.createLogger({name: 'skos/areas', type: 'route'});
 
 router.get('/', function(req, res, next) {
   return mongodb.collection('ontology').findOne({}, function(errFind, data) {

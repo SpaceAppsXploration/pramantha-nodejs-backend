@@ -2,8 +2,7 @@
   "mongoUrl": "mongodb://localhost:27017/PMT",
   "port": 7000,
   "host": "0.0.0.0",
-  "log": {
-    "file": false,
-    "console": true
-  }
+  "logToFile": true,
+  "logToConsole": false,
+  "logLevel": "info"    
 }
