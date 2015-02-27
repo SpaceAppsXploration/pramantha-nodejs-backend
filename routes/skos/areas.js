@@ -6,22 +6,17 @@
 
 
 var Router  = require('express').Router;
-var debug   = require('debug')('pramantha:root');
+var debug   = require('debug')('pramantha:skos:areas');
 
 var router  = Router();
 var mongodb = process.app.get('mongodb');
 
 router.get('/', function(req, res, next) {
-  return mongodb.collection('base').findOne({"chronos:group": "STI"}, function(errFind, doc) {
+  return mongodb.collection('ontology').findOne({}, function(errFind, data) {
     if (errFind) {
       return next(errFind);
     }
-    if (doc) {
-      return res.send(doc);  
-    } else {
-      return res.status(404).end();
-    }
-    
+    return res.send(data);
   });
 });
 

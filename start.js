@@ -34,8 +34,8 @@ async.series(
     },
 
     function(cbSeries) {
-      app.use('/helloworld', require('./routes/helloworld'));
-      app.use('/concepts',   require('./routes/concepts'));
+      app.use('/skos',     require('./routes/skos'));
+      app.use('/concepts', require('./routes/concepts'));
       debug('All routes have been set-up.');
       return cbSeries();
     },
