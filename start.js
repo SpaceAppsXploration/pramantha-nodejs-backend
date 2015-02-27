@@ -33,15 +33,14 @@ async.series(
     function(cbSeries) {
       app.use(require('./middlewares/logging')());
       app.use(require('./middlewares/cors')());
-      app.use(require('./middlewares/documentationHeader')());
       return cbSeries();
     },
 
     function(cbSeries) {
       app.use('/skos',     require('./routes/skos'));
       app.use('/concepts', require('./routes/concepts'));
-      app.use('/documentation', require('./routes/documentation'));
-      app.use('/context', require('./routes/context'));
+      app.use('/docs',     require('./routes/docs'));
+      app.use('/contexts', require('./routes/contexts'));
       logger.trace('All routes have been set-up.');
       return cbSeries();
     },

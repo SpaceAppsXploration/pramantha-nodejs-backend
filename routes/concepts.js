@@ -10,6 +10,10 @@ var mongodb    = process.app.get('mongodb');
 var collection = mongodb.collection('base'); 
 var logger     = logging.createLogger({name: 'concepts', type: 'route'});
 
+router.use(require('../middlewares/header-link-api-doc')());
+router.use(require('../middlewares/header-link-concept-context')());
+router.use(require('../middlewares/content-type-json')());
+
 router.get('/', function(req, res, next) {
   var query = {
     '$or': [

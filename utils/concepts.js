@@ -41,7 +41,7 @@ function setConceptAtIds(concepts) {
           concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(match[1].toLowerCase()).replace(/(?:%20|%2B)/g, '+') + '#concept';
           match = null;
         } else {
-          delete concept['@id'];
+          // delete concept['@id'];
         }
       }
     }
