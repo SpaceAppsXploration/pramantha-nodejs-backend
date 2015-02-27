@@ -32,11 +32,11 @@ function setConceptAtIds(concepts) {
       if (label) {
         label = label.toLowerCase();
         concept['skos:prefLabel'] = label;
-        concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(label) + '#concept';
+        concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(label).replace(/(?:%20|%2B)/g, '+') + '#concept';
       } else {
         match = atId.match(/http:\/\/pramantha.eu\/[a-zA-Z0-9]+\/(.+)\/?/);
         if (match) {
-          concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(match[1].toLowerCase()) + '#concept';
+          concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(match[1].toLowerCase()).replace(/(?:%20|%2B)/g, '+') + '#concept';
           match = null;
         }
       }
