@@ -1,0 +1,42 @@
+{
+  "@context":             "<%- baseUrl %>/jsonld/context-documentation",
+  "@id":                  "<%- baseUrl %>/docs",
+  "@type":                "hydra:ApiDocumentation",
+  "hydra:title":          "Pramantha's Semantic API",
+  "hydra:description":    "Per data ad astra",
+  "hydra:entrypoint":     "<%- baseUrl %>/",
+  "hydra:supportedClass": [
+    {
+      "@id": "http://www.w3.org/2004/02/skos/core#Concept",
+      "@type": "hydra:Class",
+      "hydra:title": "SKOS Concept",
+      "hydra:description": "Represents a concept (duh).",
+      "hydra:supportedProperty": [
+        {
+          "hydra:property": "skos:narrower",
+          "hydra:title": "Narrower",
+          "hydra:description": "Narrower concepts.",
+          "hydra:required": null,
+          "hydra:readonly": false,
+          "hydra:writeonly": false
+        },
+        {
+          "hydra:property": "skos:broader",
+          "hydra:title": "Broader",
+          "hydra:description": "Broader concepts.",
+          "hydra:required": null,
+          "hydra:readonly": false,
+          "hydra:writeonly": false
+        },
+        {
+          "hydra:property": "skos:prefLabel",
+          "hydra:title": "Label",
+          "hydra:description": "The preferred label for this concept.",
+          "hydra:required": null,
+          "hydra:readonly": false,
+          "hydra:writeonly": false
+        }
+      ]
+    }
+  ]
+}

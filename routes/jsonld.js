@@ -5,9 +5,14 @@ var jsonld  = require('../jsonld');
 
 var router  = Router();
 
-router.get('/api', function(req, res, next) {
+router.get('/:slug', function(req, res, next) {
   res.set('Content-Type', 'application/ld+json');
-  return res.send(jsonld.documentation.api);
+  var doc = jsonld[req.params.slug];
+  if (doc) {
+    res.send(doc);
+  } else {
+    res.status(404).end();
+  }
 });
 
 module.exports = router;

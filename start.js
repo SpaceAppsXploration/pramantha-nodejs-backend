@@ -39,8 +39,7 @@ async.series(
     function(cbSeries) {
       app.use('/skos',     require('./routes/skos'));
       app.use('/concepts', require('./routes/concepts'));
-      app.use('/docs',     require('./routes/docs'));
-      app.use('/contexts', require('./routes/contexts'));
+      app.use('/jsonld',   require('./routes/jsonld'));
       logger.trace('All routes have been set-up.');
       return cbSeries();
     },

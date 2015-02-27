@@ -12,12 +12,8 @@ function load(filename) {
   return parsed;
 }
 
-var contexts = module.exports.contexts = {
-  concept: load('context-concept.json')
-};
-
-var documentation = module.exports.documentation = {
-  api: load('api-documentation.json')
-}
-
+module.exports['context-documentation'] = load('context-documentation.json');
+module.exports['context-generic']       = load('context-generic.json');
+module.exports['context-concept']       = load('context-concept.json');
+module.exports.documentation            = load('documentation.json');
 
