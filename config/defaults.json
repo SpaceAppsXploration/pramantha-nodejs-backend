@@ -4,5 +4,6 @@
   "host": "0.0.0.0",
   "logToFile": true,
   "logToConsole": false,
-  "logLevel": "info"    
+  "logLevel": "info",
+  "baseUrl": "http://127.0.0.1:7000"    
 }
