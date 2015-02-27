@@ -7,7 +7,7 @@ module.exports = function(opts) {
     res.on('finish', function() {
       var code = res.statusCode;
       var now  = Date.now();
-      if (code >= 300 && code < 400) {
+      if (code >= 301 && code < 304) {
         logger.trace('%s redirect to %s!', code, res.getHeader('Location'));
       }
       return logger.info('%s %s %s (%sms)', req.method, req.url, code, now - then);

@@ -3,6 +3,7 @@ var ObjectID = require('mongodb').ObjectID;
 var async    = require('async');
 var config   = require('../config');
 var _        = require('underscore');
+var globals  = require('../globals');
 
 function regexifyConceptLabel(label) {
   if (typeof(label) != 'string') {
@@ -11,8 +12,8 @@ function regexifyConceptLabel(label) {
   label = label.trim();                 // Trim
   label = label.replace(/\+/ig, '%20'); // Normalize spaces
   label = decodeURIComponent(label);    // Decode
-  label = label.replace('(', '\\(');    // Replace ( with \(
-  label = label.replace(')', '\\)');    // Replace ) with \)
+  label = label.replace(/\(/g, '\\(');    // Replace ( with \(
+  label = label.replace(/\)/g, '\\)');    // Replace ) with \)
   return new RegExp(label, 'i');
 }
 
@@ -28,6 +29,7 @@ function setConceptAtIds(concepts) {
     label  = concept['skos:prefLabel'];
     atId   = concept['@id'];
     atType = concept['@type'];
+    delete concept['skos:scopeNote'];
     if (atId) {
       if (label) {
         label = label.toLowerCase();
@@ -38,6 +40,8 @@ function setConceptAtIds(concepts) {
         if (match) {
           concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(match[1].toLowerCase()).replace(/(?:%20|%2B)/g, '+') + '#concept';
           match = null;
+        } else {
+          delete concept['@id'];
         }
       }
     }
