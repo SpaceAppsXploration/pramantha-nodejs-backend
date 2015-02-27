@@ -1,7 +1,7 @@
 
 var ObjectID = require('mongodb').ObjectID;
 var async    = require('async');
-var config   = require('./config');
+var config   = require('../config');
 var _        = require('underscore');
 
 function regexifyConceptLabel(label) {

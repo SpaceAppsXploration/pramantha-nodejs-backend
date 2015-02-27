@@ -1,6 +1,6 @@
 
 var Router  = require('express').Router;
-var utils   = require('../utils');
+var utils   = require('../utils/concepts');
 var globals = require('../globals');
 var logging = require('../logging');
 var config  = require('../config');
@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
       if (errToArray) {
         return next(errToArray);
       }
-      return res.send(utils.setConceptAtId(data));
+      return res.send(utils.setConceptAtIds(data));
     });
   });
 });
@@ -50,9 +50,8 @@ router.get('/:label', function(req, res, next) {
       {'@type': globals.RDF_CONCEPT_CLASS_URI},
       {'@type': globals.RDF_KEYWORD_CLASS_URI}
     ],
-    'skos:prefLabel': utils.normalizeLabel(req.params.label)
+    'skos:prefLabel': utils.regexifyConceptLabel(req.params.label)
   };
-  logger.trace('Looking for skos:prefLabel %s', utils.normalizeLabel(req.params.label));
   return collection.findOne(query, function(errFind, doc) {
     if (errFind) {
       return next(errFind);
@@ -60,7 +59,7 @@ router.get('/:label', function(req, res, next) {
     if (!doc) {
       return res.status(404).end();
     }
-    return res.send(utils.setConceptAtId(doc));
+    return res.send(utils.setConceptAtIds(doc));
   });
 });
 
@@ -70,9 +69,8 @@ router.get('/:label/ancestor', function(req, res, next) {
       {'@type': globals.RDF_CONCEPT_CLASS_URI},
       {'@type': globals.RDF_KEYWORD_CLASS_URI}
     ],
-    'skos:prefLabel': utils.normalizeLabel(req.params.label)
+    'skos:prefLabel': utils.regexifyConceptLabel(req.params.label)
   };
-  logger.trace('Looking for skos:prefLabel %s', utils.normalizeLabel(req.params.label));
   return collection.findOne(query, function(errFind, doc) {
     if (errFind) {
       return next(errFind);
@@ -101,9 +99,8 @@ router.get('/:label/children', function(req, res, next) {
       {'@type': globals.RDF_CONCEPT_CLASS_URI},
       {'@type': globals.RDF_KEYWORD_CLASS_URI}
     ],
-    'skos:prefLabel': utils.normalizeLabel(req.params.label)
+    'skos:prefLabel': utils.regexifyConceptLabel(req.params.label)
   };
-  logger.trace('Looking for skos:prefLabel %s', utils.normalizeLabel(req.params.label));
   return collection.findOne(query, function(errFind, doc) {
     if (errFind) {
       return next(errFind);
@@ -118,7 +115,7 @@ router.get('/:label/children', function(req, res, next) {
       if (!narrower) {
         return res.status(404).end();
       }
-      return res.send(utils.setConceptAtId(narrower));
+      return res.send(utils.setConceptAtIds(narrower));
     });
   });
 });
