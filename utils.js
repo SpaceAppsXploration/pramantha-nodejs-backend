@@ -1,6 +1,7 @@
 
 var ObjectID = require('mongodb').ObjectID;
 var async    = require('async');
+var config   = require('./config');
 
 function normalizeLabel(label) {
   if (typeof(label) != 'string') {
@@ -9,11 +10,15 @@ function normalizeLabel(label) {
   return decodeURIComponent(label.trim().replace(/\+/ig, '%20'));
 }
 
-module.exports.normalizeLabel = normalizeLabel;
-
-
-
-
+function setConceptAtId(concepts) {
+  var isArray = Array.isArray(concepts);
+  concepts = isArray ? concepts : [concepts];
+  for (var i = 0; i < concepts.length; i++) {
+    var concept = concepts[i];
+    concept['@id'] = config.baseUrl + '/concepts/' + encodeURIComponent(concept['skos:prefLabel']);
+  }
+  return isArray ? concepts : concepts[0];
+}
 
 function getBroaderConcept(concept, collection, cb) {
   switch(concept['chronos:group']) {
@@ -64,5 +69,7 @@ function getNarrowerConcepts(concept, collection, cb) {
   }
 }
 
+module.exports.normalizeLabel      = normalizeLabel;
+module.exports.setConceptAtId      = setConceptAtId;
 module.exports.getBroaderConcept   = getBroaderConcept;
 module.exports.getNarrowerConcepts = getNarrowerConcepts;
