@@ -11,6 +11,22 @@
       "@type": "hydra:Class",
       "hydra:title": "SKOS Concept",
       "hydra:description": "Represents a concept (duh).",
+      "hydra:supportedOperation": [
+        {
+          "@type": "hydra:Operation",
+          "hydra:title": "Retrieves a concept",
+          "hydra:method": "GET",
+          "hydra:returns": "skos:Concept",
+          "hydra:possibleStatus": [
+            {
+              "@type": "hydra:Status",
+              "hydra:statusCode": 200,
+              "hydra:title": "OK",
+              "hydra:description": "Everything went well."
+            }
+          ]
+        }
+      ],
       "hydra:supportedProperty": [
         {
           "hydra:property": "skos:narrower",
