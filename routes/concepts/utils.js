@@ -1,6 +1,6 @@
 
 function encodeConceptLabel(label) {
-  return encodeURIComponent(label).replace(/(?:%20|%2B)/g, '+');
+  return encodeURIComponent(label.toLowerCase()).replace(/(?:%20|%2B)/g, '+');
 }
 
 function genConceptURIFromLabel(baseUrl, label) {

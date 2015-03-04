@@ -47,7 +47,7 @@ module.exports = function(config, opts) {
           if (group != 'keywords') {
             return cbSeries();
           }
-          query = {'skos:topConceptOf._id': ObjectID(concept['skos:inScheme']._id)};
+          var query = {'skos:topConceptOf._id': ObjectID(concept['skos:inScheme']._id)};
           return collection.findOne(query, function(errFind, data) {
             if (errFind) { 
               return cbSeries(errFind); 

@@ -1,10 +1,11 @@
 
-var Router   = require('express').Router;
-var logging  = require('../utils/logging');
-var globals  = require('../utils/globals');
-var utils    = require('./concepts/utils');
-var ObjecId  = require('mongodb').ObjectId;
-var exporter = require('./concepts/exporter');
+var Router      = require('express').Router;
+var logging     = require('../utils/logging');
+var globals     = require('../utils/globals');
+var utils       = require('./concepts/utils');
+var ObjecId     = require('mongodb').ObjectId;
+var exporter    = require('./concepts/exporter');
+var parametizer = require('./concepts/parametizer');
 
 module.exports = function(config, opts) {
 
@@ -12,6 +13,7 @@ module.exports = function(config, opts) {
   var logger     = logging.createLogger({name: 'concepts', type: 'route'});
   var collection = opts.db.collection('base');
   var exportt    = exporter(config, {collection: collection});
+  var parametize = parametizer(config, {collection: collection});
 
   router.use(function(req, res, next) {
     res.set('Content-Type', 'application/json');
@@ -36,25 +38,31 @@ module.exports = function(config, opts) {
         {'chronos:group': 'subjects'}
       ]
     };
-    return collection.find(query, function(errFind, cursor) {
-      if (errFind) {
-        return next(errFind);
+    return parametize(query, req, function(errParametize, query) {
+      if(errParametize) {
+        logger.error(errParametize);
+        return res.sendStats(500);
       }
-      return cursor.toArray(function(errToArray, data) {
-        if (errToArray) {
-          return next(errToArray);
+      console.log(query);
+      return collection.find(query, function(errFind, cursor) {
+        if (errFind) {
+          return next(errFind);
         }
-        return exportt(data, function(errExport, exported) {
-          if (errExport) {
-            logger.error(errExport);
-            return res.sendStatus(500);
+        return cursor.toArray(function(errToArray, data) {
+          if (errToArray) {
+            return next(errToArray);
           }
-          return res.send(exported);
+          return exportt(data, function(errExport, exported) {
+            if (errExport) {
+              logger.error(errExport);
+              return res.sendStatus(500);
+            }
+            return res.send(exported);
+          });
         });
       });
     });
   });
-
 
   router.get('/c/:label', function(req, res, next) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
