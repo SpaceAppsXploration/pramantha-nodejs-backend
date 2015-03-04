@@ -20,7 +20,7 @@ module.exports = function(config, opts) {
       var label = exported.label = concept['skos:prefLabel'].toLowerCase();
       var url   = exported.url   = utils.genConceptURIFromLabel(baseUrl, label);
       var group = exported.group = concept['chronos:group'];
-      // var type  = exported.type  = concept['@type'];
+      var type  = exported.type  = concept['@type'];
 
       if (group === 'divisions') {
         exported.children = utils.genChildConceptsURIFromLabel(baseUrl, label);

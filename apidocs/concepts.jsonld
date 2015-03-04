@@ -8,8 +8,6 @@
   "hydra:supportedClass": [
     {
       
-   
-     
       "hydra:supportedProperty": [
         {
           "hydra:property": "chronos:concepts",
@@ -52,17 +50,17 @@
       ],
       "hydra:supportedProperty": [
         {
-          "hydra:property": "skos:narrower",
-          "hydra:title": "Narrower",
-          "hydra:description": "Narrower concepts.",
+          "hydra:property": "chronos:children",
+          "hydra:title": "Child concepts",
+          "hydra:description": "Link to a collection of child concepts.",
           "hydra:required": null,
           "hydra:readonly": false,
           "hydra:writeonly": false
         },
         {
-          "hydra:property": "skos:broader",
-          "hydra:title": "Broader",
-          "hydra:description": "Broader concepts.",
+          "hydra:property": "chronos:ancestor",
+          "hydra:title": "Ancestor concept",
+          "hydra:description": "The ancestor concept.",
           "hydra:required": null,
           "hydra:readonly": false,
           "hydra:writeonly": false

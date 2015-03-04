@@ -31,6 +31,8 @@ module.exports = function(config, opts) {
   });
 
   router.get('/c', function(req, res, next) {
+    res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
+    res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
     var query = {
       '$or': [
         {'chronos:group': 'divisions'},
@@ -43,7 +45,6 @@ module.exports = function(config, opts) {
         logger.error(errParametize);
         return res.sendStats(500);
       }
-      console.log(query);
       return collection.find(query, function(errFind, cursor) {
         if (errFind) {
           return next(errFind);
