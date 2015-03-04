@@ -1,0 +1,13 @@
+{
+  "@context": [
+    "<%- baseUrl %>/contexts/generic.jsonld",
+    {
+      "entrypoint": "hydra:Entrypoint",
+      "type": "@type",
+      "url": "@id",
+      "concepts": {"@id": "chronos:concepts", "@type": "@id"},
+      "schemes": {"@id": "chronos:schemes", "@type": "@id"},
+      "scopes": {"@id": "chronos:scopes", "@type": "@id"}
+    }
+  ]
+}

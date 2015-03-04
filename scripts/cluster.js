@@ -4,18 +4,18 @@ var path      = require('path');
 var stream    = require('stream');
 var logrotate = require('logrotate-stream');
 var fs        = require('fs');
-var logging   = require('./logging');
-var config    = require('./config');
+var logging   = require('../utils/logging');
+var config    = require('../config');
 
 if (cluster.isMaster) {
 
   var stderr = new stream.PassThrough();
   var stdout = new stream.PassThrough();
-  var logger = logging.createLogger({name: 'cluster', stream: stdout});
+  var logger = logging.createLogger({name: 'cluster', stream: stdout, type: 'script'});
 
   if (config.logToFile) {
-    var fileerr = logrotate({ file: path.join(__dirname, 'logs', 'stderr.log'), size: '100k', keep: 3 });
-    var fileout = logrotate({ file: path.join(__dirname, 'logs', 'stdout.log'), size: '100k', keep: 3 });
+    var fileerr = logrotate({ file: path.join(__dirname, '..', 'logs', 'stderr.log'), size: '100k', keep: 3 });
+    var fileout = logrotate({ file: path.join(__dirname, '..', 'logs', 'stdout.log'), size: '100k', keep: 3 });
     stderr.pipe(fileerr);
     stdout.pipe(fileout);
   }
@@ -56,10 +56,14 @@ if (cluster.isMaster) {
     cluster.fork();
   }
 
-  fs.writeFile(path.join(__dirname, '.pid'), process.pid, function(errWrite) {
+  fs.writeFile(path.join(__dirname, '..', '.pid'), process.pid, function(errWrite) {
     if (errWrite) {
       logger.error('could not write .pid file');
     }
+  });
+
+  process.on('exit', function() {
+    return fs.unlinkSync(path.join(__dirname, '..', '.pid'));
   });
 
 }

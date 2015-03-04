@@ -1,5 +1,6 @@
 
-var logger = process.app.get('logger');
+var logging = require('../utils/logging');
+var logger  = logging.createLogger({name: 'logger', type: 'middleware'});
 
 module.exports = function(opts) {
   return function(req, res, next) {

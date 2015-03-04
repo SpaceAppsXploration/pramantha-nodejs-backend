@@ -6,15 +6,15 @@ var url      = require('url');
 var path     = require('path');
 var http     = require('http');
 var async    = require('async');
-var logging  = require('./logging');
+var logging  = require('../utils/logging');
+var config   = require('../config');
 
-var config = require('./config');
-var app    = process.app = express();
+var app    = express();
 var server = http.createServer(app);
-var logger = logging.createLogger({name: 'app'});
+var opts   = {};
+var logger = logging.createLogger({name: 'start', type: 'script'});
 
 app.set('json spaces', 2);
-app.set('logger', logger);
 
 async.series(
   [
@@ -25,21 +25,21 @@ async.series(
           return cbSeries(errConnect);
         }
         logger.trace('MongoDB\'s client has been initialized.');
-        app.set('mongodb', db);
+        opts.db = db;
         return cbSeries();
       });
     }, 
 
     function(cbSeries) {
-      app.use(require('./middlewares/logging')());
-      app.use(require('./middlewares/cors')());
+      app.use(require('../middlewares/logging')(config, opts));
+      app.use(require('../middlewares/cors')(config, opts));
       return cbSeries();
     },
 
     function(cbSeries) {
-      app.use('/skos',     require('./routes/skos'));
-      app.use('/concepts', require('./routes/concepts'));
-      app.use('/jsonld',   require('./routes/jsonld'));
+      app.use('/concepts', require('../routes/concepts')(config, opts));
+      app.use('/contexts', require('../routes/contexts')(config, opts));
+      app.use('/apidocs',  require('../routes/apidocs')(config, opts));
       logger.trace('All routes have been set-up.');
       return cbSeries();
     },

@@ -1,11 +1,34 @@
 {
-  "@context":             "<%- baseUrl %>/jsonld/context-documentation",
-  "@id":                  "<%- baseUrl %>/docs",
+  "@context":             "<%- baseUrl %>/contexts/apidocs.jsonld",
+  "@id":                  "<%- baseUrl %>/apidocs/concepts.jsonld",
   "@type":                "hydra:ApiDocumentation",
   "hydra:title":          "Pramantha's Semantic API",
   "hydra:description":    "Per data ad astra",
-  "hydra:entrypoint":     "<%- baseUrl %>/",
+  "hydra:entrypoint":     "<%- baseUrl %>/concepts",
   "hydra:supportedClass": [
+    {
+      
+   
+     
+      "hydra:supportedProperty": [
+        {
+          "hydra:property": "chronos:concepts",
+          "hydra:title": "Concepts",
+          "hydra:description": "This API's collection of concepts.",
+          "hydra:required": null,
+          "hydra:readonly": false,
+          "hydra:writeonly": false
+        },
+        {
+          "hydra:property": "chronos:schemes",
+          "hydra:title": "Schemes",
+          "hydra:description": "This API's collection of concepts.",
+          "hydra:required": null,
+          "hydra:readonly": false,
+          "hydra:writeonly": false
+        }
+      ]
+    },
     {
       "@id": "http://www.w3.org/2004/02/skos/core#Concept",
       "@type": "hydra:Class",
@@ -53,6 +76,12 @@
           "hydra:writeonly": false
         }
       ]
+    },
+    {
+      "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+      "@type": "hydra:Class",
+      "hydra:title": "SKOS Concept Scheme",
+      "hydra:description": "Represents a concept scheme (duh)."
     }
   ]
 }

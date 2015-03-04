@@ -1,5 +1,5 @@
 var bunyan = require('bunyan');
-var config = require('./config');
+var config = require('../config');
 
 function createLogger(opts) {
   opts = opts || {};

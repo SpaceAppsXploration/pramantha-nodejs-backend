@@ -1,6 +1,6 @@
 {
   "@context": [
-    "<%- baseUrl %>/jsonld/context-generic",
+    "<%- baseUrl %>/contexts/generic.jsonld",
     {
       "hydra:endpoint": {"@type": "@id"}
     }
