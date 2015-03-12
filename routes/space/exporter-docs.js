@@ -36,6 +36,7 @@ module.exports = function(config, opts) {
       exported['chronosUrl'] = config.baseUrl + '/space/dbpediadocs/' + _id;
       exported['label']      = doc['skos:altLabel'];
       exported['group']      = 'dbpediadocs';
+      exported['relatedMissions'] = doc['relMission'];
 
       return cbMap(null, exported);
             

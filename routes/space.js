@@ -5,6 +5,7 @@ var globals      = require('../utils/globals');
 var utils        = require('../utils/utils');
 var ObjectID     = require('mongodb').ObjectID;
 var exporterDocs = require('./space/exporter-docs');
+var exporterMiss = require('./space/exporter-missions');
 // var parametizer = require('./concepts/parametizer');
 
 module.exports = function(config, opts) {
@@ -13,6 +14,7 @@ module.exports = function(config, opts) {
   var logger     = logging.createLogger({name: 'missions', type: 'route'});
   var collection = opts.db.collection('base');
   var exportDocs = exporterDocs(config, {collection: collection});
+  var exportMiss = exporterMiss(config, {collection: collection});
   // var parametize = parametizer(config, {collection: collection});
 
   router.use(function(req, res, next) {
@@ -47,7 +49,13 @@ module.exports = function(config, opts) {
           res.sendStatus(500);
           return logger.error(errToArray);
         }
-        return res.send(data);
+        return exportMiss(data, function(errExport, exported) {
+          if (errExport) {
+            res.sendStatus(500);
+            return logger.error(errExport);
+          }
+          return res.send(exported);
+        });
       });
     });
   });
@@ -68,7 +76,13 @@ module.exports = function(config, opts) {
       if (!doc) {
         return res.sendStatus(404);
       }
-      return res.send(doc);
+      return exportMiss(doc, function(errExport, exported) {
+        if (errExport) {
+          res.sendStatus(500);
+          return logger.error(errExport);
+        }
+        return res.send(exported);
+      });
     });
   });
 
