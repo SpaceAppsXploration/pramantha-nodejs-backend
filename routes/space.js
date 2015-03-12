@@ -114,12 +114,12 @@ module.exports = function(config, opts) {
     });
   });
 
-  router.get('/dbpediadocs/:id', function(req, res, next) {
+  router.get('/dbpediadocs/:label', function(req, res, next) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
     var query = {
       'chronos:group': 'dbpediadocs',
-      '_id': ObjectID(req.params.id)
+      'skos:altLabel': utils.regexpifyLabel(utils.decodeLabel(req.params.label))
       // 'chronos:relKeyword._id': {'$exists': true}
     };
     return collection.findOne(query, function(errFind, doc) {

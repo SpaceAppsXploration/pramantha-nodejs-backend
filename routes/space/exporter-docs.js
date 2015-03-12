@@ -1,6 +1,6 @@
 
 var async    = require('async');
-// var utils    = require('./utils');
+var utils    = require('../../utils/utils');
 var config   = require('../../config');
 var ObjectID = require('mongodb').ObjectID;
 var _        = require('underscore');
@@ -19,11 +19,7 @@ module.exports = function(config, opts) {
 
       var exported = {}; //_.extend({}, doc);
 
-      // var label = exported.label = concept['skos:prefLabel'].toLowerCase();
-      // var url   = exported.url   = utils.genConceptURIFromLabel(baseUrl, label);
-      // var group = exported.group = concept['chronos:group'];
-      // var type  = exported.type  = concept['@type'];
-
+      var label = doc['skos:altLabel'];
       var keywords = doc['chronos:relKeyword'];
       var _id      = doc['_id'];
 
@@ -33,10 +29,12 @@ module.exports = function(config, opts) {
       });
 
       exported['url']        = doc['owl:sameAs'][0]['@value'];
-      exported['chronosUrl'] = config.baseUrl + '/space/dbpediadocs/' + _id;
-      exported['label']      = doc['skos:altLabel'];
+      exported['chronosUrl'] = config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(label);
+      exported['label']      = label;
       exported['group']      = 'dbpediadocs';
       exported['relatedMissions'] = doc['relMission'];
+      exported['abstract']   = doc['chronos:tagMeAbs'];
+      exported['category']   = doc['chronos:dbpediaCategories'];
 
       return cbMap(null, exported);
             
