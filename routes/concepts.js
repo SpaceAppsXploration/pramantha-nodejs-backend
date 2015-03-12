@@ -68,6 +68,7 @@ module.exports = function(config, opts) {
   router.get('/c/:label', function(req, res, next) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
+    res.links({'describedBy': config.baseUrl + '/contexts/bum.jsonld'});
     var query = {
       '$or': [
         {'chronos:group': 'divisions'},
@@ -83,6 +84,7 @@ module.exports = function(config, opts) {
       if (!doc) {
         return res.status(404).end();
       }
+      
       return exportt(doc, function(errExport, exported) {
         if (errExport) {
             logger.error(errExport);

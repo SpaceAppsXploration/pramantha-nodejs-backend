@@ -40,6 +40,7 @@ async.series(
       app.use('/concepts', require('../routes/concepts')(config, opts));
       app.use('/contexts', require('../routes/contexts')(config, opts));
       app.use('/apidocs',  require('../routes/apidocs')(config, opts));
+      app.use('/space',    require('../routes/space')(config, opts));
       logger.trace('All routes have been set-up.');
       return cbSeries();
     },
