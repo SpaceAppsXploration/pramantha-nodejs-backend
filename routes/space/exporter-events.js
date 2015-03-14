@@ -35,8 +35,9 @@ module.exports = function(config, opts) {
       exported['url']        = config.baseUrl + '/space/events/' + label;
       exported['header']     = doc['chronos:eventHeader'];
       //exported['relatedMissions'] = doc['relMission'];
-      exported['date']       = doc['chronos:eventDate']['@value'];
+      exported['date']       = doc['chronos:eventdate']['@value'];
       exported['content']    = doc['chronos:eventContent'];
+      exported['image']      = doc['chronos:eventImageLink']['@value'];
 
 
       return cbMap(null, exported);
