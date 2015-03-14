@@ -3,3 +3,5 @@ node_modules/
 *.log
 .pid
 *.pid
+*.iml
+.idea/
