@@ -34,6 +34,8 @@ module.exports = function(config, opts) {
       exported['relatedMissions'] = doc['relMission'];
       exported['abstract']   = doc['chronos:tagMeAbs'];
       exported['category']   = doc['chronos:dbpediaCategories'];
+      exported['wikiUrl']    = 'http://en.wikipedia.org/wiki/' + label;
+
 
       return cbMap(null, exported);
             
