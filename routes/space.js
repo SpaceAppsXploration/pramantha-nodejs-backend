@@ -16,6 +16,7 @@ module.exports = function(config, opts) {
   var collection = opts.db.collection('base');
   var exportDocs = exporterDocs(config, {collection: collection});
   var exportMiss = exporterMiss(config, {collection: collection});
+  var exportTgts  = exporterTgt(config, {collection: collection});
   // var parametize = parametizer(config, {collection: collection});
 
   router.use(function(req, res, next) {
@@ -158,7 +159,7 @@ module.exports = function(config, opts) {
           res.sendStatus(500);
           return logger.error(errToArray);
         }
-        return exportMiss(data, function(errExport, exported) {
+        return exportTgts(data, function(errExport, exported) {
           if (errExport) {
             res.sendStatus(500);
             return logger.error(errExport);
@@ -185,7 +186,7 @@ module.exports = function(config, opts) {
       if (!doc) {
         return res.sendStatus(404);
       }
-      return exportDocs(doc, function(errExport, exported) {
+      return exportTgts(doc, function(errExport, exported) {
         if (errExport) {
           res.sendStatus(500);
           return logger.error(errExport);
