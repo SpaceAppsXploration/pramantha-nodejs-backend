@@ -24,13 +24,11 @@ module.exports = function(config, opts) {
       var exported = {}; //_.extend({}, doc);
 
       var label = doc['@id'].slice(-32);
-      //var keywords = doc['chronos:relKeyword'];
+      var mission = doc['chronos:relMission'];
       var _id      = doc['_id'];
 
-      /*exported['relatedMission'] = missions.map(function(mission) {
-        var matches = mission['@id'].match(/http:\/\/api.pramantha.net\/data\/keywords\/(.+)/);
-        return matches ? config.baseUrl + '/space/missions/' + matches[1] : null;
-      });*/
+      exported['relatedMission'] = config.baseUrl + '/space/missions/' +
+            utils.makeLabelFromTitle(mission['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/)[1]);
 
       exported['url']        = config.baseUrl + '/space/events/' + label;
       exported['header']     = doc['chronos:eventHeader'];

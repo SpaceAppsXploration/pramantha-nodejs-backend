@@ -31,7 +31,18 @@ function makeTitleFromPrefLabel(label) {
   ;
 }
 
+function makeLabelFromTitle(label) {
+  /*
+  * works only to make API labels from wiki titles
+  */
+  return encodeURIComponent(label.toLowerCase())
+    .replace('_', '+')
+    .replace(/(?:%20|%2B)/g, '+')
+  ;
+}
+
 module.exports.encodeLabel             = encodeLabel;
 module.exports.decodeLabel             = decodeLabel;
 module.exports.regexpifyLabel          = regexpifyLabel;
 module.exports.makeTitleFromPrefLabel  = makeTitleFromPrefLabel;
+module.exports.makeLabelFromTitle      = makeLabelFromTitle;
