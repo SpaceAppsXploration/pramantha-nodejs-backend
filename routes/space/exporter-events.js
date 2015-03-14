@@ -27,17 +27,16 @@ module.exports = function(config, opts) {
       //var keywords = doc['chronos:relKeyword'];
       var _id      = doc['_id'];
 
-      exported['relatedMission'] = missions.map(function(mission) {
+      /*exported['relatedMission'] = missions.map(function(mission) {
         var matches = mission['@id'].match(/http:\/\/api.pramantha.net\/data\/keywords\/(.+)/);
         return matches ? config.baseUrl + '/space/missions/' + matches[1] : null;
-      });
+      });*/
 
       exported['url']        = config.baseUrl + '/space/events/' + label;
       exported['header']     = doc['chronos:eventHeader'];
       //exported['relatedMissions'] = doc['relMission'];
       exported['date']       = doc['chronos:eventDate']['@value'];
       exported['content']    = doc['chronos:eventContent'];
-      exported['relMission'] = doc['chronos:relMission']['@id'];
 
 
       return cbMap(null, exported);
