@@ -43,6 +43,9 @@ module.exports = function(config, opts) {
         }
         // exported['target']      = mission['chronos:relTarget'];
       }
+      else if (mission['@type'] === 'http://ontology.projectchronos.eu/chronos/launch') {
+        exported['wikiUrl'] = 'http://en.wikipedia.org/wiki/' + utils.makeTitleFromPrefLabel(mission['skos:prefLabel']);
+      }
       
 
       return cbMap(null, exported);
