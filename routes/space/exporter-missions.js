@@ -41,7 +41,7 @@ module.exports = function(config, opts) {
       if (mission['@type'] === 'http://ontology.projectchronos.eu/chronos/mission') {
         exported['officialUrl'] = mission['schema:url']['@value'];
         if (mission['chronos:slug']) {
-          exported['wikiUrl'] = 'http://en.wikipedia.org/wiki/' + utils.encodeLabel(mission['chronos:slug']); 
+          exported['wikiUrl'] = 'http://en.wikipedia.org/wiki/' + mission['chronos:slug'];
         }
         // exported['target']      = mission['chronos:relTarget'];
       }
