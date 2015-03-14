@@ -24,7 +24,7 @@ function makeTitleFromPrefLabel(label) {
   * by passing the "skos:prefLabel" property.
   * For "missions" use "chronos:slug" or
   * for "dbpediadocs" use "skos:altLabel"
-  * with encodeLabel
+  * without lowercasing or subsitutions
   */
   return encodeURIComponent(label.toLowerCase())
     .replace(' ', '_')
