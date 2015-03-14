@@ -33,9 +33,11 @@ module.exports = function(config, opts) {
       //   return matches ? config.baseUrl + '/concepts/c/' + matches[1] : null;
       // });
 
-      exported['url']        = config.baseUrl + '/space/missions/' + utils.encodeLabel(label);
-      exported['group']      = 'missions';
-      exported['era']        = mission['chronos:missionEra'];
+      exported['url']           = config.baseUrl + '/space/missions/' + utils.encodeLabel(label);
+      exported['group']         = 'missions';
+      exported['era']           = mission['chronos:missionEra'];
+      exported['chronos_type']  = mission['@type'];
+      exported['ext_types']     = mission['rdf:type'];
       if (mission['@type'] === 'http://ontology.projectchronos.eu/chronos/mission') {
         exported['officialUrl'] = mission['schema:url']['@value'];
         if (mission['chronos:slug']) {
