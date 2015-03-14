@@ -19,6 +19,13 @@ function regexpifyLabel(label) {
 }
 
 function makeTitleFromPrefLabel(label) {
+  /*
+  * works only to make wiki titles from "launches"
+  * by passing the "skos:prefLabel" property.
+  * For "missions" use "chronos:slug" or
+  * for "dbpediadocs" use "skos:altLabel"
+  * with encodeLabel
+  */
   return encodeURIComponent(label.toLowerCase())
     .replace(' ', '_')
   ;
