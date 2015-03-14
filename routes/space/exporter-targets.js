@@ -38,7 +38,7 @@ module.exports = function(config, opts) {
       //exported['relatedMissions'] = doc['relMission'];
       exported['abstract']   = doc['chronos:abstract']['@value'];
       exported['wikiUrl']    = 'http://en.wikipedia.org/wiki/' + doc['chronos:slug'];
-      exported['ontology']   = 'http://ontology.projectchronos.eu/solarsystem/' + label;
+      exported['ontology']   = 'http://ontology.projectchronos.eu/solarsystem/' + doc['chronos:slug'];
 
 
       return cbMap(null, exported);
