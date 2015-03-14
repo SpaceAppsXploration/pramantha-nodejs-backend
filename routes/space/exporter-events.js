@@ -24,7 +24,7 @@ module.exports = function(config, opts) {
       var exported = {}; //_.extend({}, doc);
 
       var n = doc['@id'].lastIndexOf("/");
-      var label = doc['@id'].slice(n);
+      var label = doc['@id'].slice(n+1);
       var mission = doc['chronos:relMission'];
       var _id      = doc['_id'];
 
