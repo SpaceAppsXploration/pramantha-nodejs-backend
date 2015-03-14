@@ -27,8 +27,8 @@ module.exports = function(config, opts) {
       var mission = doc['chronos:relMission'];
       var _id      = doc['_id'];
 
-      exported['relatedMission'] = config.baseUrl + '/space/missions/' +
-            utils.makeLabelFromTitle(mission['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/)[1]);
+      /*exported['relatedMission'] = config.baseUrl + '/space/missions/' +
+            utils.makeLabelFromTitle(mission['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/)[1]);*/
 
       exported['url']        = config.baseUrl + '/space/events/' + label;
       exported['header']     = doc['chronos:eventHeader'];
