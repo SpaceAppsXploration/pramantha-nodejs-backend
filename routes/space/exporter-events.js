@@ -37,7 +37,7 @@ module.exports = function(config, opts) {
       //exported['relatedMissions'] = doc['relMission'];
       exported['date']       = doc['chronos:eventdate']['@value'];
       exported['content']    = doc['chronos:eventContent'];
-      exported['image']      = doc['chronos:eventImageLink']['@value'];
+      exported['image']      = doc['chronos:eventImageLink']['@value'] ? doc['chronos:eventImageLink']['@value'] : null;
 
 
       return cbMap(null, exported);
