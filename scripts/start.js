@@ -16,6 +16,9 @@ var logger = logging.createLogger({name: 'start', type: 'script'});
 
 app.set('json spaces', 2);
 
+PORT =  process.env.OPENSHIFT_NODEJS_PORT || config.port
+HOST =  process.env.OPENSHIFT_NODEJS_IP || config.host
+
 async.series(
   [
 
@@ -46,7 +49,7 @@ async.series(
     },
 
     function(cbSeries) {
-      return server.listen(config.port, config.host, cbSeries);
+      return server.listen(PORT, HOST, cbSeries);
     }
 
   ], 
@@ -55,7 +58,7 @@ async.series(
     if (errSeries) {
       throw errSeries;
     }
-    logger.info('Listening on %s:%s', config.host, config.port);
+    logger.info('Listening on %s:%s', HOST, PORT);
     return null;
   }
 

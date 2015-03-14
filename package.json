@@ -2,9 +2,10 @@
   "name": "pramantha-nodejs-backend",
   "version": "0.0.1",
   "description": "Full-Stack Node.Js Server",
-  "main": "index.js",
+  "main": "scripts/start.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test"
+    "test": "./node_modules/mocha/bin/mocha test",
+    "start": "node scripts/start.js"
   },
   "repository": {
     "type": "git",

@@ -1,9 +1,9 @@
 {
-  "mongoUrl": "mongodb://localhost:27017/PMT",
-  "port": 7000,
+  "mongoUrl": "mongodb://chronosapi:*************@127.3.87.2:27017/PMT",
+  "port": 8080,
   "host": "0.0.0.0",
   "logToFile": true,
   "logToConsole": false,
   "logLevel": "info",
-  "baseUrl": "http://127.0.0.1:7000"    
+  "baseUrl": "http://chronosapi-chronoslod.rhcloud.com"    
 }
