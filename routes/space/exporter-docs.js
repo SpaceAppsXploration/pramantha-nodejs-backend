@@ -28,10 +28,9 @@ module.exports = function(config, opts) {
         return matches ? config.baseUrl + '/concepts/c/' + matches[1] : null;
       });
 
-      exported['url']        = doc['owl:sameAs'][0]['@value'];
-      exported['chronosUrl'] = config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(label);
+      exported['dbpedia']    = doc['owl:sameAs'][0]['@value'];
+      exported['url']        = config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(label);
       exported['label']      = label;
-      exported['group']      = 'dbpediadocs';
       exported['relatedMissions'] = doc['relMission'];
       exported['abstract']   = doc['chronos:tagMeAbs'];
       exported['category']   = doc['chronos:dbpediaCategories'];
