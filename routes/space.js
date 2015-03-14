@@ -175,7 +175,7 @@ module.exports = function(config, opts) {
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
     var query = {
       'chronos:group': 'targets',
-      'skos:altLabel': utils.regexpifyLabel(utils.decodeLabel(req.params.label))
+      'skos:prefLabel': utils.regexpifyLabel(utils.decodeLabel(req.params.label))
       // 'chronos:relKeyword._id': {'$exists': true}
     };
     return collection.findOne(query, function(errFind, doc) {
