@@ -18,7 +18,13 @@ function regexpifyLabel(label) {
   , 'i');
 }
 
+function makeTitleFromPrefLabel(label) {
+  return encodeURIComponent(label.toLowerCase())
+    .replace(' ', '_')
+  ;
+}
 
-module.exports.encodeLabel    = encodeLabel;
-module.exports.decodeLabel    = decodeLabel;
-module.exports.regexpifyLabel = regexpifyLabel;
+module.exports.encodeLabel             = encodeLabel;
+module.exports.decodeLabel             = decodeLabel;
+module.exports.regexpifyLabel          = regexpifyLabel;
+module.exports.makeTitleFromPrefLabel  = makeTitleFromPrefLabel;
