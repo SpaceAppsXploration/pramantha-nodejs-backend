@@ -22,6 +22,14 @@ module.exports = function(config, opts) {
       var group = exported.group = concept['chronos:group'];
       var type  = exported.type  = concept['@type'];
 
+      var scopeNote = concept['skos:scopeNote'];
+
+      if (Array.isArray(scopeNote) && scopeNote.length > 0) {
+        exported.note = scopeNote[0]['@value'];        
+      }
+      
+      var code  = exported.code = concept['chronos:code'];
+
       if (group === 'divisions') {
         exported.children = utils.genChildConceptsURIFromLabel(baseUrl, label);
       }

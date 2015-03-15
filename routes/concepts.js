@@ -39,6 +39,24 @@ module.exports = function(config, opts) {
     });
   });
 
+  router.get('/root', function(req, res, next) {
+    res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
+    res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts-entry.jsonld'});
+    var query = {
+      "@id": "http://api.pramantha.net/data/organization/NASA+Sientific+and+Technical+Information+Program"
+    };
+    return collection.findOne(query, function(errFind, doc) {
+      return exportt(doc, function(errExport, exported) {
+        exported.url = config.baseUrl + '/concepts/root';
+        if (errExport) {
+          logger.error(errExport);
+          return res.sendStatus(500);
+        }
+        return res.send(exported);
+      });
+    });
+  });
+
   router.get('/c', function(req, res, next) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
