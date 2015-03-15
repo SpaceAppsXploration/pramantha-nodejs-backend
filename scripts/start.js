@@ -37,6 +37,7 @@ async.series(
     },
 
     function(cbSeries) {
+      app.use('/', require('../routes/home/home')(config, opts));
       app.use('/concepts', require('../routes/concepts')(config, opts));
       app.use('/contexts', require('../routes/contexts')(config, opts));
       app.use('/apidocs',  require('../routes/apidocs')(config, opts));

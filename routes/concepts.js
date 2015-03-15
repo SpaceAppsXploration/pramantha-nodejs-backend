@@ -24,9 +24,18 @@ module.exports = function(config, opts) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts-entry.jsonld'});
     return res.send({
-      concepts: config.baseUrl + '/concepts/c',
-      schemes: config.baseUrl + '/concepts/schemes',
-      scopes: config.baseUrl + '/concepts/scopes'
+      welcome: "This is the Concepts API (thanks to NASA-STI\'s Subjects and Categories) >",
+      collection: {
+          "doc": "Surf the hierarchical taxonomy for space concepts.",
+          "url": config.baseUrl + '/concepts/c'
+      },
+      root: {
+          "doc": "Start from root.",
+          "url": config.baseUrl + '/concepts/root',
+          "note": "not deployed yet"
+      } //,
+      //schemes: config.baseUrl + '/concepts/schemes',
+      //scopes: config.baseUrl + '/concepts/scopes'
     });
   });
 
