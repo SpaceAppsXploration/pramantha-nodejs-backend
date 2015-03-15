@@ -26,15 +26,17 @@ module.exports = function(config, opts) {
     return next();
   });
 
-  // router.get('/', function(req, res, next) {
-  //   res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
-  //   res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts-entry.jsonld'});
-  //   return res.send({
-  //     concepts: config.baseUrl + '/concepts/c',
-  //     schemes: config.baseUrl + '/concepts/schemes',
-  //     scopes: config.baseUrl + '/concepts/scopes'
-  //   });
-  // });
+  router.get('/', function(req, res, next) {
+    res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
+     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts-entry.jsonld'});
+     return res.send({
+       welcome: "This is the Space API. You can explore resources in Chronos KB: >",
+       missions: config.baseUrl + '/space/missions',
+       dbpediadocs: config.baseUrl + '/space/dbpediadocs',
+       targets: config.baseUrl + '/space/targets',
+       events: config.baseUrl + '/space/events'
+     });
+  });
 
   router.get('/missions', function(req, res, next) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
