@@ -23,21 +23,28 @@ module.exports = function(config, opts) {
 
       var exported = {}; //_.extend({}, doc);
 
-      var n = doc['@id'].lastIndexOf("/");
-      var label = doc['@id'].slice(n+1);
-      var mission = doc['chronos:relMission'];
+      var n        = doc['@id'].lastIndexOf("/");
+      var label    = doc['@id'].slice(n+1);
+      var mission  = doc['chronos:relMission'];
       var _id      = doc['_id'];
 
       /*exported['relatedMission'] = config.baseUrl + '/space/missions/' +
             utils.makeLabelFromTitle(mission['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/)[1]);*/
 
-      exported['url']        = config.baseUrl + '/space/events/' + label;
-      exported['header']     = doc['chronos:eventHeader'];
-      //exported['relatedMissions'] = doc['relMission'];
-      exported['date']       = doc['chronos:eventdate'] != null ? doc['chronos:eventdate'].slice(0,10) : null;
-      exported['content']    = doc['chronos:eventContent']['@value'];
-      exported['image']      = doc['chronos:eventImageLink'] != null ? doc['chronos:eventImageLink']['@value'] : null;
+      console.log(doc);
 
+      exported['url']     = config.baseUrl + '/space/events/' + label;
+      exported['header']  = doc['chronos:eventHeader'];
+      exported['date']    = doc['chronos:eventdate'] != null ? doc['chronos:eventdate'].slice(0,10) : null;
+      exported['content'] = doc['chronos:eventContent']['@value'];
+      exported['image']   = doc['chronos:eventImageLink'] != null ? doc['chronos:eventImageLink']['@value'] : null;
+
+      exported['mission'] = config.baseUrl 
+        + '/space/missions/' 
+        + mission['@id']
+          .match(/http\:\/\/api\.pramantha\.net\/data\/missions\/([a-z0-9\+]+)/i)[1]
+          .toLowerCase()
+      ;
 
       return cbMap(null, exported);
 
