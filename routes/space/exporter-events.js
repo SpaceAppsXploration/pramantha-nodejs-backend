@@ -2,7 +2,6 @@
  * on 14/03/2015.
  */
 
-
 var async    = require('async');
 var utils    = require('../../utils/utils');
 var config   = require('../../config');
@@ -31,8 +30,6 @@ module.exports = function(config, opts) {
       /*exported['relatedMission'] = config.baseUrl + '/space/missions/' +
             utils.makeLabelFromTitle(mission['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/)[1]);*/
 
-      console.log(doc);
-
       exported['url']     = config.baseUrl + '/space/events/' + label;
       exported['header']  = doc['chronos:eventHeader'];
       exported['date']    = doc['chronos:eventdate'] != null ? doc['chronos:eventdate'].slice(0,10) : null;
@@ -46,7 +43,33 @@ module.exports = function(config, opts) {
           .toLowerCase()
       ;
 
-      return cbMap(null, exported);
+      return async.series([
+
+        function findRelatedDocs(cbSeries) {
+          var query = {
+            'chronos:group': 'dbpediadocs',
+            'chronos:relEvent._id': ObjectID(doc._id)
+          };
+          return collection.find(query, function(errFind, cursor) {
+            if (errFind) {
+              return cbSeries(errFind);
+            }
+            return cursor.toArray(function(errToArray, docs) {
+              if (errToArray) {
+                return cbSeries(errToArray);
+              }
+              exported.documents = docs.map(function(doc) {
+                return config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(doc['skos:altLabel']);
+              });
+              return cbSeries();
+            });
+          });
+        }
+
+
+      ], function(errSeries) {
+        return cbMap(errSeries, exported);
+      });
 
     }, function(errMap, docs) {
       if (errMap) {
