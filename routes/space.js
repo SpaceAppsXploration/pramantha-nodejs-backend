@@ -10,6 +10,15 @@ var exporterTgts   = require('./space/exporter-targets');
 var exporterEvents = require('./space/exporter-events');
 // var parametizer = require('./concepts/parametizer');
 
+var logger = logging.createLogger({name: 'space', type: 'script'});
+
+/*
+* CACHE
+ */
+
+var DBPEDIADOCS_CACHE = null;
+var EVENTS_CACHE = null
+
 module.exports = function(config, opts) {
 
   var router         = Router();
@@ -99,7 +108,8 @@ module.exports = function(config, opts) {
       'chronos:group': 'dbpediadocs',
       // 'chronos:relKeyword._id': {'$exists': true}
     };
-    return collection.find(query, function(errFind, cursor) {
+    //logger.info(DBPEDIADOCS_CACHE)
+    return DBPEDIADOCS_CACHE != null ? res.send(DBPEDIADOCS_CACHE) : collection.find(query, function(errFind, cursor) {
       if (errFind) {
         res.sendStatus(500);
         return logger.error(errFind);
@@ -114,6 +124,7 @@ module.exports = function(config, opts) {
             res.sendStatus(500);
             return logger.error(errExport);
           }
+          DBPEDIADOCS_CACHE = exported;
           return res.send(exported);
         });
       });
@@ -208,7 +219,8 @@ module.exports = function(config, opts) {
       'chronos:group': 'events',
       // 'chronos:relKeyword._id': {'$exists': true}
     };
-    return collection.find(query, function(errFind, cursor) {
+    var options = {'limit': 300}; // query are limited to 300 to not create TIMEOUT errors in the server
+    return EVENTS_CACHE != null ? res.send(EVENTS_CACHE) : collection.find(query, {}, options, function(errFind, cursor) {
       if (errFind) {
         res.sendStatus(500);
         return logger.error(errFind);
@@ -223,6 +235,7 @@ module.exports = function(config, opts) {
             res.sendStatus(500);
             return logger.error(errExport);
           }
+          EVENTS_CACHE = exported;
           return res.send(exported);
         });
       });
