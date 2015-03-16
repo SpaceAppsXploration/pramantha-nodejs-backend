@@ -10,8 +10,6 @@ var exporterTgts   = require('./space/exporter-targets');
 var exporterEvents = require('./space/exporter-events');
 // var parametizer = require('./concepts/parametizer');
 
-var logger = logging.createLogger({name: 'space', type: 'script'});
-
 /*
 * CACHE
  */
@@ -22,7 +20,7 @@ var EVENTS_CACHE = null
 module.exports = function(config, opts) {
 
   var router         = Router();
-  var logger         = logging.createLogger({name: 'missions', type: 'route'});
+  var logger         = logging.createLogger({name: '/space', type: 'route'});
   var collection     = opts.db.collection('base');
   var exportDocs     = exporterDocs(config, {collection: collection});
   var exportMiss     = exporterMiss(config, {collection: collection});
@@ -80,7 +78,7 @@ module.exports = function(config, opts) {
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
     var query = {
       'chronos:group': 'missions',
-      'skos:prefLabel': utils.regexpifyLabel(utils.decodeLabel(req.params.label))
+      '@id': { '$regex' : utils.decodeLabel(req.params.label), '$options': 'i' },
       // 'chronos:relKeyword._id': {'$exists': true}
     };
     return collection.findOne(query, function(errFind, doc) {
