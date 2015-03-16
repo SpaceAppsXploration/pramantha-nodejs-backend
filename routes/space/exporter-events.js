@@ -39,8 +39,8 @@ module.exports = function(config, opts) {
       exported['mission'] = config.baseUrl 
         + '/space/missions/' 
         + mission['@id']
-          .match(/http\:\/\/api\.pramantha\.net\/data\/missions\/([a-z0-9\+]+)/i)[1]
-          .toLowerCase()
+          .match(/http\:\/\/api\.pramantha\.net\/data\/missions\/(.+)/)[1]
+          .toLowerCase()  
       ;
 
       return async.series([
