@@ -63,6 +63,34 @@ module.exports = function(config, opts) {
         });
     });
 
+    router.get('/c/:label', function(req, res, next) {
+        res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
+        res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
+        logger.info(utils.decodeLabel(req.params.label))
+        var query = {
+          '@id': { '$regex' : utils.decodeLabel(req.params.label), '$options': 'i' },
+          //'skos:prefLabel': utils.regexpifyLabel(utils.decodeLabel(req.params.label))
+          // 'chronos:relKeyword._id': {'$exists': true}
+        };
+        var options = {"_id": false};
+        return collection.findOne(query, options, function(errFind, doc) {
+          if (errFind) {
+            res.sendStatus(500);
+            return logger.error(errFind);
+          }
+          if (!doc) {
+            return res.sendStatus(404);
+          }
+          return exportSensors(doc, function(errExport, exported) {
+            if (errExport) {
+              res.sendStatus(500);
+              return logger.error(errExport);
+            }
+            return res.send(exported);
+          });
+        });
+      });
+
     return router
 
 };

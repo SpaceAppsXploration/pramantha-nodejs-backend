@@ -78,7 +78,7 @@ module.exports = function(config, opts) {
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
     var query = {
       'chronos:group': 'missions',
-      'skos:prefLabel': utils.regexpifyLabel(utils.decodeLabel(req.params.label))
+      '@id': { '$regex' : utils.decodeLabel(req.params.label), '$options': 'i' },
       // 'chronos:relKeyword._id': {'$exists': true}
     };
     return collection.findOne(query, function(errFind, doc) {
