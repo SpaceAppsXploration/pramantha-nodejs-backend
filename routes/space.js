@@ -10,8 +10,6 @@ var exporterTgts   = require('./space/exporter-targets');
 var exporterEvents = require('./space/exporter-events');
 // var parametizer = require('./concepts/parametizer');
 
-var logger = logging.createLogger({name: 'space', type: 'script'});
-
 /*
 * CACHE
  */
@@ -22,7 +20,7 @@ var EVENTS_CACHE = null
 module.exports = function(config, opts) {
 
   var router         = Router();
-  var logger         = logging.createLogger({name: 'missions', type: 'route'});
+  var logger         = logging.createLogger({name: '/space', type: 'route'});
   var collection     = opts.db.collection('base');
   var exportDocs     = exporterDocs(config, {collection: collection});
   var exportMiss     = exporterMiss(config, {collection: collection});

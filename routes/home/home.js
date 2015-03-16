@@ -35,6 +35,10 @@ module.exports = function(config, opts) {
                 "doc": "Explore the linked resources about space activities",
                 "url": config.baseUrl + '/space/'
             },
+            "Sensors API": {
+                "doc": "Explore the linked resources about space sensors",
+                "url": config.baseUrl + '/sensors/'
+            },
             "software by": "Pramantha Ltd, powered by Project Chronos"
         });
     });
