@@ -51,11 +51,10 @@ module.exports = function(config, opts) {
               exported['url']       = config.baseUrl + '/sensors/c/' + utils.encodeLabel(label);
               exported['name']      = doc['name'];
               if('fullName' in doc) exported['full name'] = doc['fullName'];
-              if('chronos:relMission' in doc) exported['mission']   = config.baseUrl + '/space/missions/' + utils.encodeLabel(
-                                                                     doc['chronos:relMission']['@id'].match(/http:\/\/api.pramantha.net\/data\/mission\/(.+)/)[1]);
-
-
-
+              if('chronos:relMission' in doc) exported['mission'] = config.baseUrl + '/space/missions/' +
+                                                                    doc['chronos:relMission']['@id']
+                                                                    .match(/http:\/\/api.pramantha.net\/data\/mission\/(.+)/)[1]
+                                                                    .toLowerCase();
               return cbMap(null, exported);
 
         }
@@ -75,7 +74,7 @@ module.exports = function(config, opts) {
                   else {
                       if('spacecraft:isComponentOf' in doc) {
                           detector = doc['spacecraft:isComponentOf']['@id'].match(/http:\/\/api.pramantha.net\/data\/sensors\/(.+)/)[1]
-                          exported['is a sensor of'] = config.baseUrl + '/sensors/c/' + utils.encodeLabel(detector);
+                          exported['is a sensor in'] = config.baseUrl + '/sensors/c/' + utils.encodeLabel(detector);
                       }
                      exported['is traversed by'] =  doc["sensor:isTraversedBy"]
                      exported['field of research'] =  doc["sensor:hasFieldOfResearch"]
@@ -88,11 +87,10 @@ module.exports = function(config, opts) {
                   exported['url']       = config.baseUrl + '/sensors/c/' + utils.encodeLabel(label);
                   exported['name']      = doc['name'];
                   if('fullName' in doc) exported['full name'] = doc['fullName'];
-                  if('chronos:relMission' in doc) exported['mission']   = config.baseUrl + '/space/missions/' + utils.encodeLabel(
-                                                                            doc['chronos:relMission']['@id'].match(/http:\/\/api.pramantha.net\/data\/mission\/(.+)/)[1]);
-
-
-
+                  if('chronos:relMission' in doc) exported['mission'] = config.baseUrl + '/space/missions/' +
+                                                                        doc['chronos:relMission']['@id']
+                                                                        .match(/http:\/\/api.pramantha.net\/data\/mission\/(.+)/)[1]
+                                                                        .toLowerCase();
 
                   return cbMap(null, exported);
         }
