@@ -2,11 +2,13 @@
 var async    = require('async');
 var utils    = require('./utils');
 var ObjectID = require('mongodb').ObjectID;
+var logging        = require('../../utils/logging');
 
 module.exports = function(config, opts) {
 
   var collection = opts.collection;
   var baseUrl    = config.baseUrl;
+  var logger     = logging.createLogger({name: '/concepts', type: 'exportt'});
 
   return function exportt(concepts, cb) {
 
@@ -20,54 +22,60 @@ module.exports = function(config, opts) {
       var label = exported.label = concept['skos:prefLabel'].toLowerCase();
       var url   = exported.url   = utils.genConceptURIFromLabel(baseUrl, label);
       var group = exported.group = concept['chronos:group'];
-      var type  = exported.type  = concept['@type'];
+      //var type  = exported.type  = concept['@type'];
+      var code = exported.code = concept['chronos:code'];
 
-      var scopeNote = concept['skos:scopeNote'];
 
-      if (Array.isArray(scopeNote) && scopeNote.length > 0) {
-        exported.note = scopeNote[0]['@value'];        
-      }
-      
-      var code  = exported.code = concept['chronos:code'];
+      logger.info(concepts.length)
+      if (concepts.length < 350 ) {
 
-      if (group === 'divisions') {
-        exported.children = utils.genChildConceptsURIFromLabel(baseUrl, label);
-      }
-
-      return async.series([
-
-        function(cbSeries) {
-          if (group != 'subjects') { 
-            return cbSeries();
+          var scopeNote = concept['skos:scopeNote'];
+          if (Array.isArray(scopeNote) && scopeNote.length > 0) {
+              exported.note = scopeNote[0]['@value'];
           }
-          exported.children = utils.genChildConceptsURIFromLabel(baseUrl, label);
-          var query = {_id: ObjectID(concept['skos:broader']._id)};
-          return collection.findOne(query, function(errFind, data) {
-            if (errFind) { 
-              return cbSeries(errFind); 
-            }
-            exported.ancestor = utils.genConceptURIFromLabel(baseUrl, data['skos:prefLabel']);
-            return cbSeries();
-          });
-        }, 
 
-        function(cbSeries) {
-          if (group != 'keywords') {
-            return cbSeries();
+          if (group === 'divisions') {
+              exported.children = utils.genChildConceptsURIFromLabel(baseUrl, label);
           }
-          var query = {'skos:topConceptOf._id': ObjectID(concept['skos:inScheme']._id)};
-          return collection.findOne(query, function(errFind, data) {
-            if (errFind) { 
-              return cbSeries(errFind); 
-            }
-            exported.ancestor = utils.genConceptURIFromLabel(baseUrl, data['skos:prefLabel']);
-            return cbSeries();
-          });
-        }
 
-      ], function(errSeries) {
-        return cbMap(errSeries, exported);
-      });
+          return async.series([
+
+              function (cbSeries) {
+                  if (group != 'subjects') {
+                      return cbSeries();
+                  }
+                  exported.children = utils.genChildConceptsURIFromLabel(baseUrl, label);
+                  var query = {_id: ObjectID(concept['skos:broader']._id)};
+                  return collection.findOne(query, function (errFind, data) {
+                      if (errFind) {
+                          return cbSeries(errFind);
+                      }
+                      exported.ancestor = utils.genConceptURIFromLabel(baseUrl, data['skos:prefLabel']);
+                      return cbSeries();
+                  });
+              },
+
+              function (cbSeries) {
+                  if (group != 'keywords') {
+                      return cbSeries();
+                  }
+                  var query = {'skos:topConceptOf._id': ObjectID(concept['skos:inScheme']._id)};
+                  return collection.findOne(query, function (errFind, data) {
+                      if (errFind) {
+                          return cbSeries(errFind);
+                      }
+                      exported.ancestor = utils.genConceptURIFromLabel(baseUrl, data['skos:prefLabel']);
+                      return cbSeries();
+                  });
+              }
+
+          ], function (errSeries) {
+              return cbMap(errSeries, exported);
+          });
+
+      }
+      else return cbMap(null, exported);
+
       
     }, function(errMap, concepts) {
       if (errMap) {
