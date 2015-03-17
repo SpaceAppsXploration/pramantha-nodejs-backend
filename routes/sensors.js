@@ -30,7 +30,10 @@ module.exports = function(config, opts) {
         res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts-entry.jsonld'});
         return res.send({
             welcome: "This is the Sensors API. You can explore space missions\' sensors in Chronos KB: >",
-            collection: config.baseUrl + '/sensors/c'
+            collection: {
+                doc: "This is the sensors collection. You can find out how sensors in space works.",
+                url: config.baseUrl + '/sensors/c'
+            }
         });
     });
 

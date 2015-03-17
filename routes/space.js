@@ -38,10 +38,22 @@ module.exports = function(config, opts) {
      res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts-entry.jsonld'});
      return res.send({
        welcome: "This is the Space API. You can explore resources in Chronos KB: >",
-       missions: config.baseUrl + '/space/missions',
-       dbpediadocs: config.baseUrl + '/space/dbpediadocs',
-       targets: config.baseUrl + '/space/targets',
-       events: config.baseUrl + '/space/events'
+       missions:{
+           "doc": "Discover missions in the KB",
+           "url": config.baseUrl + '/space/missions'
+       },
+       dbpediadocs: {
+           "doc": "Discover missions in the KB",
+           "url": config.baseUrl + '/space/dbpediadocs'
+       },
+       targets: {
+           "doc": "Discover missions in the KB",
+           "url": config.baseUrl + '/space/targets'
+       },
+       events: {
+           "doc": "Discover missions in the KB",
+           "url": config.baseUrl + '/space/events'
+       }
      });
   });
 
@@ -78,7 +90,7 @@ module.exports = function(config, opts) {
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
     var query = {
       'chronos:group': 'missions',
-      '@id': { '$regex' : utils.decodeLabel(req.params.label), '$options': 'i' },
+      '@id': { '$regex' : utils.regexpifyLabel(req.params.label), '$options': 'i' },
       // 'chronos:relKeyword._id': {'$exists': true}
     };
     return collection.findOne(query, function(errFind, doc) {
@@ -217,7 +229,7 @@ module.exports = function(config, opts) {
       'chronos:group': 'events',
       // 'chronos:relKeyword._id': {'$exists': true}
     };
-    var options = {'limit': 300}; // query are limited to 300 to not create TIMEOUT errors in the server
+    var options = {'skip': '25','limit': 150}; // query are limited to 150 to not create TIMEOUT errors in the server
     return EVENTS_CACHE != null ? res.send(EVENTS_CACHE) : collection.find(query, {}, options, function(errFind, cursor) {
       if (errFind) {
         res.sendStatus(500);

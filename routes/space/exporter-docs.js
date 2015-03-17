@@ -19,23 +19,42 @@ module.exports = function(config, opts) {
 
       var exported = {}; //_.extend({}, doc);
 
-      var label = doc['skos:altLabel'];
-      var keywords = doc['chronos:relKeyword'];
-      var _id      = doc['_id'];
+      var label         = doc['skos:altLabel'];
+      var keywords      = doc['chronos:relKeyword'];
+      var events        = 'chronos:relEvent' in doc ? doc['chronos:relEvent'] : null;
+      var missions      = 'chronos:relMission' in doc ? doc['chronos:relMission'] : null;
+      console.log(missions)
+      var _id           = doc['_id'];
+      exported['url']   = config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(label);
+      exported['label'] = label;
 
-      exported['relatedConcepts'] = keywords.map(function(keyword) {
-        var matches = keyword['@id'].match(/http:\/\/api.pramantha.net\/data\/keywords\/(.+)/);
-        return matches ? config.baseUrl + '/concepts/c/' + matches[1] : null;
-      });
+      if (!arr) {
+        // this is /documents
+          exported['relatedConcepts'] = keywords.map(function (keyword) {
+              var matches = keyword['@id'].match(/http:\/\/api.pramantha.net\/data\/keywords\/(.+)/);
+              return matches ? config.baseUrl + '/concepts/c/' + matches[1] : null;
+          });
 
-      exported['dbpedia']    = doc['owl:sameAs'][0]['@value'];
-      exported['url']        = config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(label);
-      exported['label']      = label;
-      exported['relatedMissions'] = doc['relMission'];
-      exported['abstract']   = doc['chronos:tagMeAbs'];
-      exported['category']   = doc['chronos:dbpediaCategories'];
-      exported['wikiUrl']    = 'http://en.wikipedia.org/wiki/' + label;
 
+          if (events != null) {
+              exported['relatedEvents'] = events.map(function (event) {
+                  var matches = event['@id'].match(/http:\/\/api.pramantha.net\/data\/events\/(.+)/);
+                  return matches ? config.baseUrl + '/space/events/' + matches[1] : null;
+              });
+          }
+          if (missions != null) {
+              exported['relatedMissions'] = missions.map(function (mission) {
+                  var matches = mission['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/);
+                  return matches ? config.baseUrl + '/space/missions/' + matches[1] : null;
+              });
+          console.log(exported['relatedMissions'])
+          }
+
+          exported['dbpedia']         = doc['owl:sameAs'][0]['@value'];
+          exported['abstract']        = doc['chronos:tagMeAbs'];
+          exported['category']        = doc['chronos:dbpediaCategories'];
+          exported['wikiUrl']         = 'http://en.wikipedia.org/wiki/' + label;
+      }
 
       return cbMap(null, exported);
             

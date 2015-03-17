@@ -13,7 +13,7 @@ module.exports = function(config, opts) {
   var collection = opts.collection;
   var baseUrl    = config.baseUrl;
 
-  return function exportTargets(docs, cb) {
+  return function exportEvents(docs, cb) {
 
     var arr  = Array.isArray(docs);
     docs = arr ? docs : [docs];
@@ -23,8 +23,8 @@ module.exports = function(config, opts) {
       var exported = {}; //_.extend({}, doc);
 
       var n        = doc['@id'].lastIndexOf("/");
-      var label    = doc['@id'].slice(n+1);
-      var mission  = doc['chronos:relMission'];
+      var label    = doc['@id'].slice(n+1);  // base64 id of the event
+      var m_slug   = doc['chronos:relMission']['@id'].match(/http:\/\/api.pramantha.net\/data\/missions\/(.+)/)[1];
       var _id      = doc['_id'];
 
       /*exported['relatedMission'] = config.baseUrl + '/space/missions/' +
@@ -32,15 +32,16 @@ module.exports = function(config, opts) {
 
       exported['url']     = config.baseUrl + '/space/events/' + label;
       exported['header']  = doc['chronos:eventHeader'];
-      exported['date']    = doc['chronos:eventdate'] != null ? doc['chronos:eventdate'].slice(0,10) : null;
-      exported['content'] = doc['chronos:eventContent']['@value'];
-      exported['image']   = doc['chronos:eventImageLink'] != null ? doc['chronos:eventImageLink']['@value'] : null;
+
+      if (!arr) {
+          exported['date'] = doc['chronos:eventdate'] != null ? doc['chronos:eventdate'].slice(0, 10) : null;
+          exported['content'] = doc['chronos:eventContent']['@value'];
+          exported['image'] = doc['chronos:eventImageLink'] != null ? doc['chronos:eventImageLink']['@value'] : null;
+      }
 
       exported['mission'] = config.baseUrl 
         + '/space/missions/' 
-        + mission['@id']
-          .match(/http\:\/\/api\.pramantha\.net\/data\/missions\/(.+)/)[1]
-          .toLowerCase()  
+        + m_slug
       ;
 
       return async.series([
@@ -59,7 +60,7 @@ module.exports = function(config, opts) {
                 return cbSeries(errToArray);
               }
               exported.documents = docs.map(function(doc) {
-                return config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(doc['skos:altLabel']);
+                return config.baseUrl + '/space/dbpediadocs/' + doc['skos:altLabel'].toLowerCase();
               });
               return cbSeries();
             });
