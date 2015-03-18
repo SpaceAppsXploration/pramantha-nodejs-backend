@@ -37,12 +37,13 @@ async.series(
     },
 
     function(cbSeries) {
-      app.use('/', require('../routes/home/home')(config, opts));
-      app.use('/concepts', require('../routes/concepts')(config, opts));
-      app.use('/sensors', require('../routes/sensors')(config, opts));
-      app.use('/contexts', require('../routes/contexts')(config, opts));
-      app.use('/apidocs',  require('../routes/apidocs')(config, opts));
-      app.use('/space',    require('../routes/space')(config, opts));
+      app.use('/',          require('../routes/home/home')(config, opts));
+      app.use('/concepts',  require('../routes/concepts')(config, opts));
+      app.use('/sensors',   require('../routes/sensors')(config, opts));
+      app.use('/contexts',  require('../routes/contexts')(config, opts));
+      app.use('/apidocs',   require('../routes/apidocs')(config, opts));
+      app.use('/space',     require('../routes/space')(config, opts));
+      app.use('/usecase01', require('../routes/usecase01')(config, opts));
       logger.trace('All routes have been set-up.');
       return cbSeries();
     },
