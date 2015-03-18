@@ -23,6 +23,7 @@ module.exports = function(config, opts) {
       var keywords      = doc['chronos:relKeyword'];
       var events        = 'chronos:relEvent' in doc ? doc['chronos:relEvent'] : null;
       var missions      = 'chronos:relMission' in doc ? doc['chronos:relMission'] : null;
+      var relMatches    = 'chronos:relatedMatch' in doc ? doc['chronos:relatedMatch'] : null;
       console.log(missions)
       var _id           = doc['_id'];
       exported['url']   = config.baseUrl + '/space/dbpediadocs/' + utils.encodeLabel(label);
@@ -35,6 +36,12 @@ module.exports = function(config, opts) {
               return matches ? config.baseUrl + '/concepts/c/' + matches[1] : null;
           });
 
+        if (relMatches != null) {
+              exported['relatedDBpedias'] = relMatches.map(function (relm) {
+                  var matches = relm['@id'].match(/http:\/\/api.pramantha.net\/data\/dbpediadocs\/(.+)/);
+                  return matches ? config.baseUrl + '/space/dbpediadocs/' + matches[1] : null;
+              });
+          }
 
           if (events != null) {
               exported['relatedEvents'] = events.map(function (event) {
