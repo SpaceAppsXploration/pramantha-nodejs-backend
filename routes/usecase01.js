@@ -72,7 +72,7 @@ module.exports = function(config, opts) {
                   return mapCb(reqErr);
                 }
                 if (res.statusCode != 200) {
-                  return mapCb(new Error('Bad response from TagMeAPI'));
+                  return mapCb(new Error('Bad response from wikipedia\'s API'));
                 } 
                 return mapCb(null, body['query']['pages'][a.id]['fullurl']);
               }
