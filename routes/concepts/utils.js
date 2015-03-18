@@ -25,8 +25,10 @@ function genRegexpFromURIString(label) {
   label = label.trim();                 // Trim
   label = label.replace(/\+/ig, '%20'); // Normalize spaces
   label = decodeURIComponent(label);    // Decode
+  label = '^' + label;
   label = label.replace(/\(/g, '\\(');  // Replace ( with \(
   label = label.replace(/\)/g, '\\)');  // Replace ) with \)
+  label = label + '$';
   return new RegExp(label, 'i');
 }
 

@@ -12,9 +12,11 @@ function decodeLabel(label) {
 }
 
 function regexpifyLabel(label) {
-  return new RegExp(label
-    .replace(/\(/g, '\\(')
-    .replace(/\)/g, '\\)')
+  return new RegExp('^' 
+    + label
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+    + '$'
   , 'i');
 }
 
