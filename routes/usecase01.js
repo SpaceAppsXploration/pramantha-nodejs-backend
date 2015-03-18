@@ -74,7 +74,7 @@ module.exports = function(config, opts) {
                 if (res.statusCode != 200) {
                   return mapCb(new Error('Bad response from TagMeAPI'));
                 } 
-                return mapCb(null, decodeURI(body['query']['pages'][a.id]['fullurl']));
+                return mapCb(null, body['query']['pages'][a.id]['fullurl']);
               }
             );
           },
