@@ -88,9 +88,10 @@ module.exports = function(config, opts) {
   router.get('/missions/:label', function(req, res, next) {
     res.links({'http://www.w3.org/ns/hydra/core#apiDocumentation': config.baseUrl + '/apidocs/concepts.jsonld'});
     res.links({'http://www.w3.org/ns/json-ld#context': config.baseUrl + '/contexts/concepts.jsonld'});
+      console.log(req.params.label)
     var query = {
       'chronos:group': 'missions',
-      '@id': { '$regex' : utils.regexpifyLabel(req.params.label), '$options': 'i' },
+      '@id': { '$regex' : utils.regexpifyMissions(req.params.label) },
       // 'chronos:relKeyword._id': {'$exists': true}
     };
     return collection.findOne(query, function(errFind, doc) {

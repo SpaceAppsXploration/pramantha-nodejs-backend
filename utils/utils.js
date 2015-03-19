@@ -11,6 +11,14 @@ function decodeLabel(label) {
   );
 }
 
+function regexpifyMissions(label) {
+ return new RegExp(label
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+    + '$'
+ , 'i');
+}
+
 function regexpifyLabel(label) {
   return new RegExp('^' 
     + label
@@ -48,3 +56,4 @@ module.exports.decodeLabel             = decodeLabel;
 module.exports.regexpifyLabel          = regexpifyLabel;
 module.exports.makeTitleFromPrefLabel  = makeTitleFromPrefLabel;
 module.exports.makeLabelFromTitle      = makeLabelFromTitle;
+module.exports.regexpifyMissions       = regexpifyMissions;
