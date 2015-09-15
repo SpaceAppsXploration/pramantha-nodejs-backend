@@ -14,3 +14,5 @@ This repo is part of the Chronos' Cloud:
 * [RDF Vocabularies](http://ontology.projectchronos.eu)  | [RDFvocab](https://github.com/SpaceAppsXploration/RDFvocab)  
 
 Copyright Pramantha Ltd, 2015
+
+All right reserved to NASA for the NASA's Scope And Subject Category Guide
